@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fund Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Fund Tracker</h1>
+    <nav>
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="assets">Assets</button>
+      <button class="tab" data-tab="history">History</button>
+      <button class="tab" data-tab="dividends">Dividends</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Dashboard -->
+    <section id="dashboard" class="panel active">
+      <div class="summary-cards">
+        <div class="card">
+          <div class="card-label">Total Assets (RMB)</div>
+          <div class="card-value" id="totalValue">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Est. Monthly Cash Flow</div>
+          <div class="card-value" id="monthlyCF">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Target Progress (vs 1.5w)</div>
+          <div class="card-value" id="targetPct">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Est. Annual Dividend</div>
+          <div class="card-value" id="annualDiv">--</div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-box">
+          <h3>Asset Allocation</h3>
+          <canvas id="allocationChart"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Domestic / Overseas</h3>
+          <canvas id="splitChart"></canvas>
+        </div>
+      </div>
+      <div class="rates-panel">
+        <h3>Exchange Rates</h3>
+        <div class="rates" id="ratesDisplay">Click "Update Prices" to load rates</div>
+      </div>
+    </section>
+
+    <!-- Assets -->
+    <section id="assets" class="panel">
+      <div class="toolbar">
+        <button id="btnUpdatePrices" class="btn btn-primary">Update Prices</button>
+        <button id="btnAddAsset" class="btn btn-success">+ Add Asset</button>
+      </div>
+      <div id="assetsContainer"></div>
+    </section>
+
+    <!-- History -->
+    <section id="history" class="panel">
+      <div class="toolbar">
+        <button id="btnSnapshot" class="btn btn-primary">Save Snapshot</button>
+      </div>
+      <div class="chart-box" style="margin-bottom:1rem">
+        <h3>Total Assets Trend</h3>
+        <canvas id="trendChart"></canvas>
+      </div>
+      <table class="data-table" id="snapshotTable">
+        <thead>
+          <tr><th>Date</th><th>Total (RMB)</th><th>Domestic</th><th>Overseas</th><th>Monthly CF</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Dividends -->
+    <section id="dividends" class="panel">
+      <div class="toolbar">
+        <button id="btnAddDividend" class="btn btn-success">+ Add Dividend</button>
+      </div>
+      <div class="summary-cards">
+        <div class="card">
+          <div class="card-label">Total Dividends (RMB)</div>
+          <div class="card-value" id="totalDividends">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Monthly Average</div>
+          <div class="card-value" id="avgMonthlyDiv">--</div>
+        </div>
+      </div>
+      <table class="data-table" id="dividendTable">
+        <thead>
+          <tr><th>Date</th><th>Asset</th><th>Amount</th><th>Currency</th><th>RMB</th><th>Note</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Asset Modal -->
+  <div class="modal-overlay" id="assetModal">
+    <div class="modal">
+      <h3 id="assetModalTitle">Add Asset</h3>
+      <form id="assetForm">
+        <input type="hidden" id="assetId">
+        <div class="form-row">
+          <label>Name</label>
+          <input type="text" id="assetName" required>
+        </div>
+        <div class="form-row">
+          <label>Ticker</label>
+          <input type="text" id="assetTicker" placeholder="e.g. 600036.SS">
+        </div>
+        <div class="form-row">
+          <label>Category</label>
+          <select id="assetCategory">
+            <option value="domestic-dividend">Domestic Dividend</option>
+            <option value="domestic-index">Domestic Index</option>
+            <option value="domestic-fixed">Domestic Fixed</option>
+            <option value="overseas-sg">Overseas - SG</option>
+            <option value="overseas-hk">Overseas - HK</option>
+            <option value="overseas-us">Overseas - US</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Currency</label>
+          <select id="assetCurrency">
+            <option value="CNY">CNY</option>
+            <option value="USD">USD</option>
+            <option value="HKD">HKD</option>
+            <option value="SGD">SGD</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Shares</label>
+          <input type="number" id="assetShares" step="any">
+        </div>
+        <div class="form-row">
+          <label>Cost Price</label>
+          <input type="number" id="assetCostPrice" step="any">
+        </div>
+        <div class="form-row">
+          <label>Current Price</label>
+          <input type="number" id="assetCurrentPrice" step="any">
+        </div>
+        <div class="form-row">
+          <label>Current Value</label>
+          <input type="number" id="assetCurrentValue" step="any">
+        </div>
+        <div class="form-row">
+          <label>Est. Dividend Yield</label>
+          <input type="number" id="assetDivYield" step="any" placeholder="e.g. 0.05 for 5%">
+        </div>
+        <div class="form-row">
+          <label><input type="checkbox" id="assetIsManual"> Manual (no auto price update)</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn" id="assetModalCancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dividend Modal -->
+  <div class="modal-overlay" id="dividendModal">
+    <div class="modal">
+      <h3>Add Dividend Record</h3>
+      <form id="dividendForm">
+        <div class="form-row">
+          <label>Asset</label>
+          <select id="divAsset"></select>
+        </div>
+        <div class="form-row">
+          <label>Date</label>
+          <input type="date" id="divDate" required>
+        </div>
+        <div class="form-row">
+          <label>Amount</label>
+          <input type="number" id="divAmount" step="any" required>
+        </div>
+        <div class="form-row">
+          <label>Currency</label>
+          <select id="divCurrency">
+            <option value="CNY">CNY</option>
+            <option value="USD">USD</option>
+            <option value="HKD">HKD</option>
+            <option value="SGD">SGD</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Amount (RMB)</label>
+          <input type="number" id="divAmountRMB" step="any" required>
+        </div>
+        <div class="form-row">
+          <label>Note</label>
+          <input type="text" id="divNote">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn" id="divModalCancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

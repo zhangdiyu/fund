@@ -1,0 +1,14 @@
+{
+  "name": "fund-tracker",
+  "version": "1.0.0",
+  "description": "Personal finance portfolio tracker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "yahoo-finance2": "^2.14.0",
+    "uuid": "^11.1.0"
+  }
+}
