@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare site
+        run: |
+          mkdir -p _site/data
+          cp public/index.html public/app.js public/style.css _site/
+          cp data/portfolio.json _site/data/
+          cp data/snapshots.json _site/data/ 2>/dev/null || echo '[]' > _site/data/snapshots.json
+          cp data/dividends.json _site/data/ 2>/dev/null || echo '[]' > _site/data/dividends.json
+          cp data/auth.json _site/data/ 2>/dev/null || true
+
+      - uses: actions/configure-pages@v4
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
