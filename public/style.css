@@ -200,6 +200,7 @@ main { padding: 1.5rem 2rem; max-width: 1400px; margin: 0 auto; }
 }
 .form-row input[type="text"],
 .form-row input[type="number"],
+.form-row input[type="password"],
 .form-row input[type="date"],
 .form-row select {
   width: 100%;
@@ -222,10 +223,40 @@ main { padding: 1.5rem 2rem; max-width: 1400px; margin: 0 auto; }
   justify-content: flex-end;
 }
 
+/* Login overlay */
+#loginOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+#loginOverlay .modal {
+  width: 320px;
+}
+
+/* Simulator input */
+#simTableContainer input[type="number"] {
+  width: 120px;
+  padding: 0.3rem 0.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+#simTableContainer input[type="number"]:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   header { flex-direction: column; gap: 0.5rem; padding: 0.75rem 1rem; }
   main { padding: 1rem; }
   .charts-row { grid-template-columns: 1fr; }
   .summary-cards { grid-template-columns: 1fr 1fr; }
+  nav { flex-wrap: wrap; }
 }

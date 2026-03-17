@@ -8,6 +8,23 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
+  <!-- Login Overlay -->
+  <div id="loginOverlay">
+    <div class="modal">
+      <h3 style="text-align:center">Fund Tracker</h3>
+      <form id="loginForm">
+        <div class="form-row">
+          <label>Password</label>
+          <input type="password" id="loginPassword" required autofocus>
+        </div>
+        <div id="loginError" style="color:var(--red);font-size:0.8rem;margin-bottom:0.5rem;display:none">Wrong password</div>
+        <div class="form-actions" style="justify-content:center">
+          <button type="submit" class="btn btn-primary" style="width:100%">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <header>
     <h1>Fund Tracker</h1>
     <nav>
@@ -15,7 +32,10 @@
       <button class="tab" data-tab="assets">Assets</button>
       <button class="tab" data-tab="history">History</button>
       <button class="tab" data-tab="dividends">Dividends</button>
+      <button class="tab" data-tab="calendar">Calendar</button>
+      <button class="tab" data-tab="simulator">Simulator</button>
     </nav>
+    <button class="btn" id="btnSettings" style="margin-left:auto;font-size:0.8rem">Settings</button>
   </header>
 
   <main>
@@ -52,6 +72,17 @@
       <div class="rates-panel">
         <h3>Exchange Rates</h3>
         <div class="rates" id="ratesDisplay">Click "Update Prices" to load rates</div>
+      </div>
+      <h3 style="margin:1.5rem 0 0.75rem;font-size:1rem;color:var(--text-muted)">Target vs Actual Allocation</h3>
+      <div class="charts-row">
+        <div class="chart-box">
+          <h3>Target vs Actual %</h3>
+          <canvas id="targetChart"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Allocation Drift</h3>
+          <div id="driftTable"></div>
+        </div>
       </div>
     </section>
 
@@ -102,6 +133,78 @@
         </thead>
         <tbody></tbody>
       </table>
+    </section>
+
+    <!-- Calendar -->
+    <section id="calendar" class="panel">
+      <div class="summary-cards">
+        <div class="card">
+          <div class="card-label">Est. Annual Dividend (RMB)</div>
+          <div class="card-value" id="calAnnualDiv">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Est. Monthly Avg (RMB)</div>
+          <div class="card-value" id="calMonthlyAvg">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Months with Dividends</div>
+          <div class="card-value" id="calActiveMonths">--</div>
+        </div>
+      </div>
+      <div class="chart-box" style="margin-bottom:1rem">
+        <h3>Monthly Dividend Projection</h3>
+        <canvas id="calendarChart"></canvas>
+      </div>
+      <table class="data-table" id="calendarTable">
+        <thead>
+          <tr><th>Month</th><th>Assets Paying</th><th>Amount (RMB)</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Simulator -->
+    <section id="simulator" class="panel">
+      <div class="toolbar">
+        <button id="btnSimReset" class="btn btn-primary">Reset to Current</button>
+      </div>
+      <div class="summary-cards" id="simCards">
+        <div class="card">
+          <div class="card-label">Current Total (RMB)</div>
+          <div class="card-value" id="simCurrentTotal">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Simulated Total (RMB)</div>
+          <div class="card-value" id="simNewTotal">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Current Monthly CF</div>
+          <div class="card-value" id="simCurrentCF">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Simulated Monthly CF</div>
+          <div class="card-value" id="simNewCF">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Current Overseas %</div>
+          <div class="card-value" id="simCurrentOverseas">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Simulated Overseas %</div>
+          <div class="card-value" id="simNewOverseas">--</div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-box">
+          <h3>Simulated Allocation</h3>
+          <canvas id="simAllocationChart"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Simulated Domestic / Overseas</h3>
+          <canvas id="simSplitChart"></canvas>
+        </div>
+      </div>
+      <div id="simTableContainer"></div>
     </section>
   </main>
 
@@ -160,6 +263,10 @@
           <input type="number" id="assetDivYield" step="any" placeholder="e.g. 0.05 for 5%">
         </div>
         <div class="form-row">
+          <label>Dividend Months (comma-separated, e.g. 3,6,9,12)</label>
+          <input type="text" id="assetDivMonths" placeholder="e.g. 1,2,3,4,5,6,7,8,9,10,11,12">
+        </div>
+        <div class="form-row">
           <label><input type="checkbox" id="assetIsManual"> Manual (no auto price update)</label>
         </div>
         <div class="form-actions">
@@ -209,6 +316,40 @@
           <button type="button" class="btn" id="divModalCancel">Cancel</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <h3>Settings</h3>
+      <form id="settingsForm">
+        <div class="form-row">
+          <label>GitHub Repository (e.g. username/fund)</label>
+          <input type="text" id="settingsRepo" placeholder="username/repo">
+        </div>
+        <div class="form-row">
+          <label>GitHub Personal Access Token</label>
+          <input type="password" id="settingsToken" placeholder="ghp_...">
+        </div>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.75rem">
+          Token needs <code>repo</code> scope. Stored only in your browser's localStorage.
+        </p>
+        <hr style="border-color:var(--border);margin:0.75rem 0">
+        <div class="form-row">
+          <label>Set/Change Password (leave blank to keep current)</label>
+          <input type="password" id="settingsPassword" placeholder="Enter new password">
+        </div>
+        <div class="form-row">
+          <label><input type="checkbox" id="settingsRemoveAuth"> Remove password protection</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn" id="settingsCancel">Cancel</button>
+        </div>
+      </form>
+      <hr style="border-color:var(--border);margin:1rem 0">
+      <button class="btn" id="btnRefreshFromSource" style="width:100%">Refresh Data from GitHub (overwrite local)</button>
     </div>
   </div>
 
