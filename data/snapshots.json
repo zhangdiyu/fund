@@ -494,5 +494,15 @@
       "estimatedAnnualDividend": 233264,
       "estimatedMonthlyCashFlow": 19439
     }
+  },
+  {
+    "id": "snap-1774257265361",
+    "date": "2026-03-23",
+    "totalValueRMB": 5061757.250247129,
+    "summary": {
+      "domestic": 3429771.190021071,
+      "overseas": 1631986.0602260581,
+      "estimatedMonthlyCashFlow": 18880.182191603733
+    }
   }
 ]

@@ -7,12 +7,14 @@
     "currency": "CNY",
     "shares": 10000,
     "costPrice": 40.12,
-    "currentPrice": 40.12,
-    "currentValue": 401200,
+    "currentPrice": 38.68,
+    "currentValue": 386800,
     "estimatedDividendYield": 0.05,
     "isManual": false,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [7]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      7
+    ]
   },
   {
     "id": "cm-600941",
@@ -22,12 +24,14 @@
     "currency": "CNY",
     "shares": 3636,
     "costPrice": 110,
-    "currentPrice": 97.74,
-    "currentValue": 355382.63999999996,
+    "currentPrice": 93.27,
+    "currentValue": 339129.72,
     "estimatedDividendYield": 0.05,
     "isManual": false,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [7]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      7
+    ]
   },
   {
     "id": "zn-600023",
@@ -37,12 +41,14 @@
     "currency": "CNY",
     "shares": 46154,
     "costPrice": 6.5,
-    "currentPrice": 5.44,
-    "currentValue": 251077.76,
+    "currentPrice": 5.25,
+    "currentValue": 242308.5,
     "estimatedDividendYield": 0.05,
     "isManual": false,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [7]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      7
+    ]
   },
   {
     "id": "hsbc-0005",
@@ -52,12 +58,17 @@
     "currency": "HKD",
     "shares": 3200,
     "costPrice": 124.9,
-    "currentPrice": 124.9,
-    "currentValue": 399680,
+    "currentPrice": 119.2,
+    "currentValue": 381440,
     "estimatedDividendYield": 0.04,
     "isManual": false,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [3, 6, 9, 12]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      3,
+      6,
+      9,
+      12
+    ]
   },
   {
     "id": "hk-div-etf-513530",
@@ -67,12 +78,14 @@
     "currency": "CNY",
     "shares": 200000,
     "costPrice": 1.685,
-    "currentPrice": 1.685,
-    "currentValue": 337000,
+    "currentPrice": 1.626,
+    "currentValue": 325200,
     "estimatedDividendYield": 0.06,
     "isManual": false,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [7]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      7
+    ]
   },
   {
     "id": "tech-broad-manual",
@@ -86,7 +99,7 @@
     "currentValue": 1000000,
     "estimatedDividendYield": 0.01,
     "isManual": true,
-    "lastUpdated": "2026-03-17",
+    "lastUpdated": "2026-03-23",
     "dividendMonths": []
   },
   {
@@ -101,8 +114,10 @@
     "currentValue": 500000,
     "estimatedDividendYield": 0.03,
     "isManual": true,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [6]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      6
+    ]
   },
   {
     "id": "money-fund-manual",
@@ -116,8 +131,21 @@
     "currentValue": 300000,
     "estimatedDividendYield": 0.02,
     "isManual": true,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
   },
   {
     "id": "qqqi-sg",
@@ -127,12 +155,25 @@
     "currency": "SGD",
     "shares": 2000,
     "costPrice": 52.04,
-    "currentPrice": 52.04,
-    "currentValue": 104080,
+    "currentPrice": 50,
+    "currentValue": 100000,
     "estimatedDividendYield": 0.12,
     "isManual": false,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
   },
   {
     "id": "jepq-sg",
@@ -142,12 +183,25 @@
     "currency": "SGD",
     "shares": 700,
     "costPrice": 57.14,
-    "currentPrice": 57.26,
-    "currentValue": 40082,
+    "currentPrice": 55.76,
+    "currentValue": 39032,
     "estimatedDividendYield": 0.1,
     "isManual": false,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
   },
   {
     "id": "sgov-sg",
@@ -157,12 +211,25 @@
     "currency": "SGD",
     "shares": 500,
     "costPrice": 100,
-    "currentPrice": 100.52,
-    "currentValue": 50260,
+    "currentPrice": 100.58,
+    "currentValue": 50290,
     "estimatedDividendYield": 0.045,
     "isManual": false,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
   },
   {
     "id": "uob-deposit-manual",
@@ -176,8 +243,10 @@
     "currentValue": 40000,
     "estimatedDividendYield": 0.035,
     "isManual": true,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [6]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      6
+    ]
   },
   {
     "id": "voo-hk",
@@ -187,12 +256,17 @@
     "currency": "HKD",
     "shares": 500,
     "costPrice": 615.19,
-    "currentPrice": 615.19,
-    "currentValue": 307595,
+    "currentPrice": 597.94,
+    "currentValue": 298970,
     "estimatedDividendYield": 0.013,
     "isManual": false,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [3, 6, 9, 12]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      3,
+      6,
+      9,
+      12
+    ]
   },
   {
     "id": "hsbc-hkd-deposit-manual",
@@ -206,7 +280,9 @@
     "currentValue": 150000,
     "estimatedDividendYield": 0.04,
     "isManual": true,
-    "lastUpdated": "2026-03-17",
-    "dividendMonths": [6]
+    "lastUpdated": "2026-03-23",
+    "dividendMonths": [
+      6
+    ]
   }
 ]
