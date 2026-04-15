@@ -6,6 +6,8 @@ let exchangeRates = { USD_CNY: 7.25, HKD_CNY: 0.93, SGD_CNY: 5.40 };
 let allocationChart, splitChart, trendChart, targetChart, calendarChart;
 let simAllocationChart, simSplitChart;
 let simValues = {};
+const IS_LOCAL_DEV = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const UPDATE_WORKFLOW_FILE = 'update-prices.yml';
 
 const TARGET_ALLOCATION = {
   'domestic-dividend': 0.35,
@@ -79,6 +81,37 @@ function hasGitHubConfig() {
   return !!(STORE.get('github-token') && STORE.get('github-repo'));
 }
 
+function inferGitHubPagesRepo() {
+  if (!window.location.hostname.endsWith('.github.io')) return '';
+  const owner = window.location.hostname.replace(/\.github\.io$/, '');
+  const repo = window.location.pathname.split('/').filter(Boolean)[0] || '';
+  return owner && repo ? `${owner}/${repo}` : '';
+}
+
+function getActiveRepo() {
+  return STORE.get('github-repo') || inferGitHubPagesRepo();
+}
+
+function getWorkflowUrl(repo) {
+  return `https://github.com/${repo}/actions/workflows/${UPDATE_WORKFLOW_FILE}`;
+}
+
+async function fetchStaticData() {
+  return Promise.all([
+    fetch('data/portfolio.json').then(r => r.json()),
+    fetch('data/snapshots.json').then(r => r.json()).catch(() => []),
+    fetch('data/dividends.json').then(r => r.json()).catch(() => []),
+  ]);
+}
+
+async function fetchLocalApiData() {
+  return Promise.all([
+    fetch('/api/portfolio').then(r => r.json()),
+    fetch('/api/snapshots').then(r => r.json()).catch(() => []),
+    fetch('/api/dividends').then(r => r.json()).catch(() => []),
+  ]);
+}
+
 /* ── Helpers ── */
 function fmtNum(n, decimals = 0) {
   if (n == null || isNaN(n)) return '--';
@@ -107,6 +140,17 @@ function toRMB(value, currency) {
 
 /* ── Data Loading ── */
 async function loadAll() {
+  if (IS_LOCAL_DEV) {
+    [assets, snapshots, dividends] = await fetchLocalApiData();
+    const rates = STORE.get('rates');
+    if (rates) exchangeRates = rates;
+    STORE.set('portfolio', assets);
+    STORE.set('dividends', dividends);
+    STORE.set('snapshots', snapshots);
+    renderAll();
+    return;
+  }
+
   // Try localStorage first (has latest user edits)
   const stored = STORE.get('portfolio');
   if (stored) {
@@ -117,11 +161,7 @@ async function loadAll() {
     if (rates) exchangeRates = rates;
   } else {
     // First visit: load from static JSON files
-    [assets, snapshots, dividends] = await Promise.all([
-      fetch('data/portfolio.json').then(r => r.json()),
-      fetch('data/snapshots.json').then(r => r.json()).catch(() => []),
-      fetch('data/dividends.json').then(r => r.json()).catch(() => []),
-    ]);
+    [assets, snapshots, dividends] = await fetchStaticData();
     STORE.set('portfolio', assets);
     STORE.set('dividends', dividends);
     STORE.set('snapshots', snapshots);
@@ -132,6 +172,15 @@ async function loadAll() {
 // Pull fresh data from repo (overwrites localStorage)
 async function refreshFromSource() {
   try {
+    if (IS_LOCAL_DEV) {
+      [assets, snapshots, dividends] = await fetchLocalApiData();
+      STORE.set('portfolio', assets);
+      STORE.set('dividends', dividends);
+      STORE.set('snapshots', snapshots);
+      renderAll();
+      return true;
+    }
+
     const token = STORE.get('github-token');
     const repo = STORE.get('github-repo');
 
@@ -146,11 +195,7 @@ async function refreshFromSource() {
       assets = a; snapshots = s; dividends = d;
     } else {
       // Fetch from static files (GitHub Pages)
-      [assets, snapshots, dividends] = await Promise.all([
-        fetch('data/portfolio.json').then(r => r.json()),
-        fetch('data/snapshots.json').then(r => r.json()).catch(() => []),
-        fetch('data/dividends.json').then(r => r.json()).catch(() => []),
-      ]);
+      [assets, snapshots, dividends] = await fetchStaticData();
     }
     STORE.set('portfolio', assets);
     STORE.set('dividends', dividends);
@@ -588,30 +633,36 @@ function renderSimulator() {
 
 /* ── Actions ── */
 document.getElementById('btnUpdatePrices').addEventListener('click', async function () {
-  const token = STORE.get('github-token');
-  const repo = STORE.get('github-repo');
-  if (!token || !repo) {
-    alert('Please configure GitHub settings first (click Settings button) to enable price updates.');
+  if (IS_LOCAL_DEV) {
+    this.classList.add('loading');
+    this.textContent = 'Updating...';
+    try {
+      const res = await fetch('/api/update-prices', { method: 'POST' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const result = await res.json();
+      assets = result.assets || [];
+      if (result.exchangeRates) {
+        exchangeRates = result.exchangeRates;
+        STORE.set('rates', exchangeRates);
+      }
+      STORE.set('portfolio', assets);
+      renderAll();
+      alert('Local prices updated from server data.');
+    } catch (e) {
+      alert('Failed to update local prices: ' + e.message);
+    }
+    this.classList.remove('loading');
+    this.textContent = 'Update Prices';
     return;
   }
-  this.classList.add('loading');
-  this.textContent = 'Triggering...';
-  try {
-    const res = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
-      method: 'POST',
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event_type: 'update-prices' }),
-    });
-    if (res.ok || res.status === 204) {
-      alert('Price update triggered! GitHub Actions will update prices and commit in ~2 min. Click "Refresh from GitHub" afterwards.');
-    } else {
-      throw new Error(`HTTP ${res.status}`);
-    }
-  } catch (e) {
-    alert('Failed to trigger update: ' + e.message);
+
+  const repo = getActiveRepo();
+  if (!repo) {
+    alert('Please configure the GitHub repository first (click Settings).');
+    return;
   }
-  this.classList.remove('loading');
-  this.textContent = 'Update Prices';
+  window.open(getWorkflowUrl(repo), '_blank', 'noopener');
+  alert('Opened the GitHub Actions update workflow in a new tab. Click "Run workflow" there to update prices safely without storing a PAT in this page.');
 });
 
 document.getElementById('btnSnapshot').addEventListener('click', function () {
@@ -766,8 +817,12 @@ window.removeDividend = function (id) {
 /* ── Settings Modal ── */
 const settingsModal = document.getElementById('settingsModal');
 
+if (!IS_LOCAL_DEV) {
+  document.getElementById('btnUpdatePrices').textContent = 'Open Update Workflow';
+}
+
 document.getElementById('btnSettings').addEventListener('click', () => {
-  document.getElementById('settingsRepo').value = STORE.get('github-repo') || '';
+  document.getElementById('settingsRepo').value = getActiveRepo();
   document.getElementById('settingsToken').value = STORE.get('github-token') || '';
   settingsModal.classList.add('open');
 });

@@ -8,6 +8,7 @@ const snapshot = require('./lib/snapshot');
 const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/data', express.static(path.join(__dirname, 'data')));
 
 // --- Portfolio ---
 app.get('/api/portfolio', (req, res) => {
