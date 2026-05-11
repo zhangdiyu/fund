@@ -7,11 +7,11 @@
     "currency": "CNY",
     "shares": 10000,
     "costPrice": 40.12,
-    "currentPrice": 38.27,
-    "currentValue": 382700.00000000006,
+    "currentPrice": 37.97,
+    "currentValue": 379700,
     "estimatedDividendYield": 0.05,
     "isManual": false,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       7
     ]
@@ -24,11 +24,11 @@
     "currency": "CNY",
     "shares": 3636,
     "costPrice": 110,
-    "currentPrice": 96.63,
-    "currentValue": 351346.68,
+    "currentPrice": 97.68,
+    "currentValue": 355164.48000000004,
     "estimatedDividendYield": 0.05,
     "isManual": false,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       7
     ]
@@ -41,11 +41,11 @@
     "currency": "CNY",
     "shares": 46154,
     "costPrice": 6.5,
-    "currentPrice": 5.7,
-    "currentValue": 263077.8,
+    "currentPrice": 5.92,
+    "currentValue": 273231.68,
     "estimatedDividendYield": 0.05,
     "isManual": false,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       7
     ]
@@ -58,11 +58,11 @@
     "currency": "HKD",
     "shares": 3200,
     "costPrice": 124.9,
-    "currentPrice": 143.4,
-    "currentValue": 458880,
+    "currentPrice": 141.2,
+    "currentValue": 451839.99999999994,
     "estimatedDividendYield": 0.04,
     "isManual": false,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       3,
       6,
@@ -78,11 +78,11 @@
     "currency": "CNY",
     "shares": 200000,
     "costPrice": 1.685,
-    "currentPrice": 1.671,
-    "currentValue": 334200,
+    "currentPrice": 1.668,
+    "currentValue": 333600,
     "estimatedDividendYield": 0.06,
     "isManual": false,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       7
     ]
@@ -99,7 +99,7 @@
     "currentValue": 1000000,
     "estimatedDividendYield": 0.01,
     "isManual": true,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": []
   },
   {
@@ -114,7 +114,7 @@
     "currentValue": 500000,
     "estimatedDividendYield": 0.03,
     "isManual": true,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       6
     ]
@@ -131,7 +131,7 @@
     "currentValue": 300000,
     "estimatedDividendYield": 0.02,
     "isManual": true,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       1,
       2,
@@ -155,11 +155,11 @@
     "currency": "SGD",
     "shares": 2000,
     "costPrice": 52.04,
-    "currentPrice": 54.56,
-    "currentValue": 109120,
+    "currentPrice": 56.5,
+    "currentValue": 113000,
     "estimatedDividendYield": 0.12,
     "isManual": false,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       1,
       2,
@@ -183,11 +183,11 @@
     "currency": "SGD",
     "shares": 700,
     "costPrice": 57.14,
-    "currentPrice": 58.86,
-    "currentValue": 41202,
+    "currentPrice": 59.61,
+    "currentValue": 41727,
     "estimatedDividendYield": 0.1,
     "isManual": false,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       1,
       2,
@@ -211,11 +211,11 @@
     "currency": "SGD",
     "shares": 500,
     "costPrice": 100,
-    "currentPrice": 100.41,
-    "currentValue": 50205,
+    "currentPrice": 100.48,
+    "currentValue": 50240,
     "estimatedDividendYield": 0.045,
     "isManual": false,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       1,
       2,
@@ -243,7 +243,7 @@
     "currentValue": 40000,
     "estimatedDividendYield": 0.035,
     "isManual": true,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       6
     ]
@@ -256,11 +256,11 @@
     "currency": "HKD",
     "shares": 500,
     "costPrice": 615.19,
-    "currentPrice": 662.52,
-    "currentValue": 331260,
+    "currentPrice": 678.04,
+    "currentValue": 339020,
     "estimatedDividendYield": 0.013,
     "isManual": false,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       3,
       6,
@@ -280,7 +280,7 @@
     "currentValue": 150000,
     "estimatedDividendYield": 0.04,
     "isManual": true,
-    "lastUpdated": "2026-05-04",
+    "lastUpdated": "2026-05-11",
     "dividendMonths": [
       6
     ]
