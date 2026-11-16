@@ -844,5 +844,15 @@
       "overseas": 1628076.752457943,
       "estimatedMonthlyCashFlow": 19142.446627204958
     }
+  },
+  {
+    "id": "snap-1794854083550",
+    "date": "2026-11-16",
+    "totalValueRMB": 5163096.4813745795,
+    "summary": {
+      "domestic": 3561104.5101977536,
+      "overseas": 1601991.971176825,
+      "estimatedMonthlyCashFlow": 19013.78578459132
+    }
   }
 ]
